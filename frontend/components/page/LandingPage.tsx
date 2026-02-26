@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import ProfileImage from '@/public/Image.jpeg'
+import { ModeToggle } from '@/components/modeTogggle'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -12,19 +13,13 @@ const navigation = [
 
 export default function LandingPage() {
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <div className="bg-white dark:bg-gray-900 transition-colors duration-300">
       
       {/* Header */}
       <header className="absolute inset-x-0 top-0 z-50">
         <nav className="flex items-center justify-between p-6 lg:px-8">
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
-              <img
-                alt="Logo"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
-              />
-            </a>
+            <ModeToggle />
           </div>
 
           <div className="hidden lg:flex lg:gap-x-12">
@@ -49,14 +44,14 @@ export default function LandingPage() {
       >
         {/* Profile Image */}
         <div className="flex-shrink-0">
-          <Image
+            <Image
             src={ProfileImage}
             alt="Profile Image"
             priority
-            className="rounded-2xl shadow-lg 
-                       w-64 h-64 object-cover 
-                       border-4 border-indigo-500"
-          />
+            className="rounded-full shadow-lg 
+                        w-64 h-64 object-cover 
+                        border-4 border-indigo-500"
+            />
         </div>
 
         {/* Text Content */}

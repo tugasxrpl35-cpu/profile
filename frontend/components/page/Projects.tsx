@@ -5,28 +5,45 @@ import { useState } from 'react'
 const projects = [
   {
     title: 'DeFi Lending Protocol',
-    description:
-      'Decentralized lending and borrowing protocol with secure collateral logic.',
+    image:
+      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1200&auto=format&fit=crop',
+    short:
+      'Decentralized lending and borrowing protocol.',
+    details:
+      'Built with Solidity and Hardhat. Includes collateral logic, liquidation engine, and Chainlink oracle integration for real-time pricing.',
   },
   {
     title: 'NFT Marketplace',
-    description:
-      'Gas-optimized NFT minting and trading platform with royalty support.',
+    image:
+      'https://images.unsplash.com/photo-1640340434855-6084b1f4901c?q=80&w=1200&auto=format&fit=crop',
+    short:
+      'Gas-optimized NFT minting and trading platform.',
+    details:
+      'ERC-721 + ERC-2981 royalty support. Integrated IPFS metadata storage and wallet-based authentication (MetaMask & WalletConnect).',
   },
   {
     title: 'DAO Governance',
-    description:
-      'On-chain governance with proposal creation and voting mechanisms.',
+    image:
+      'https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1200&auto=format&fit=crop',
+    short:
+      'On-chain governance with proposal & voting.',
+    details:
+      'Token-weighted voting, quorum validation, proposal lifecycle management, and timelock contract execution.',
   },
   {
     title: 'Web3 Wallet Dashboard',
-    description:
-      'Multi-chain wallet analytics and portfolio tracking system.',
+    image:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop',
+    short:
+      'Multi-chain wallet analytics dashboard.',
+    details:
+      'Aggregates EVM chains, tracks token balances, DeFi positions, and transaction history with indexed RPC infrastructure.',
   },
 ]
 
 export function Projects() {
   const [current, setCurrent] = useState(0)
+  const [selected, setSelected] = useState<number | null>(null)
 
   const nextProject = () => {
     setCurrent((prev) =>
@@ -40,88 +57,176 @@ export function Projects() {
     )
   }
 
+
+
+
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+const minSwipeDistance = 50
+
+const onTouchStart = (e: React.TouchEvent) => {
+  setTouchEnd(null)
+  setTouchStart(e.targetTouches[0].clientX)
+}
+
+const onTouchMove = (e: React.TouchEvent) => {
+  setTouchEnd(e.targetTouches[0].clientX)
+}
+
+const onTouchEnd = () => {
+  if (!touchStart || !touchEnd) return
+
+  const distance = touchStart - touchEnd
+
+  const isLeftSwipe = distance > minSwipeDistance
+  const isRightSwipe = distance < -minSwipeDistance
+
+  if (isLeftSwipe) {
+    nextProject()
+  }
+
+  if (isRightSwipe) {
+    prevProject()
+  }
+}
+
+
+
+
+
   return (
-    <section
-      id="projects"
-      className="py-24 px-6 lg:px-20 bg-white dark:bg-gray-900 transition-colors duration-300"
-    >
-      <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
-          Projects
-        </h2>
+    <>
+      <section
+        id="projects"
+        className="py-20 px-6 lg:px-20 bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
+            Projects
+          </h2>
 
-        {/* Slider Wrapper */}
-        <div className="mt-16 relative overflow-hidden">
-
-          {/* Sliding Container */}
+          {/* Slider */}
           <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${current * 100}%)` }}
-          >
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className="min-w-full flex justify-center px-6"
-              >
-                <div className="w-full max-w-2xl 
-                                bg-indigo-600 text-white 
-                                p-10 rounded-2xl shadow-2xl">
+  className="mt-12 relative overflow-hidden"
+  onTouchStart={onTouchStart}
+  onTouchMove={onTouchMove}
+  onTouchEnd={onTouchEnd}
+>
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${current * 100}%)` }}
+            >
+              {projects.map((project, index) => (
+                <div
+                  key={index}
+                  className="min-w-full flex justify-center px-6"
+                >
+                  <div className="w-full max-w-2xl 
+                                  bg-white dark:bg-gray-800 
+                                  p-6 rounded-2xl shadow-2xl">
 
-                  <h3 className="text-2xl font-semibold">
-                    {project.title}
-                  </h3>
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-56 object-cover rounded-xl"
+                    />
 
-                  <p className="mt-4 text-indigo-100 leading-relaxed">
-                    {project.description}
-                  </p>
+                    <h3 className="mt-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                      {project.title}
+                    </h3>
 
-                  <button className="mt-6 px-6 py-2 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-200 transition">
-                    View Details
-                  </button>
+                    <p className="mt-3 text-gray-600 dark:text-gray-300">
+                      {project.short}
+                    </p>
 
+                    <button
+                      onClick={() => setSelected(index)}
+                      className="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition"
+                    >
+                      View Details
+                    </button>
+
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
+          {/* Navigation */}
+          <div className="flex justify-center gap-6 mt-8">
+            <button
+              onClick={prevProject}
+              className="px-6 py-2 border border-indigo-600 text-indigo-600 
+                         dark:text-indigo-400 dark:border-indigo-400 
+                         rounded-lg hover:bg-indigo-600 hover:text-white transition"
+            >
+              ← Prev
+            </button>
+
+            <button
+              onClick={nextProject}
+              className="px-6 py-2 border border-indigo-600 text-indigo-600 
+                         dark:text-indigo-400 dark:border-indigo-400 
+                         rounded-lg hover:bg-indigo-600 hover:text-white transition"
+            >
+              Next →
+            </button>
+          </div>
+
+          {/* Indicators */}
+          <div className="flex justify-center gap-3 mt-6">
+            {projects.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => setCurrent(index)}
+                className={`w-3 h-3 rounded-full cursor-pointer transition ${
+                  current === index
+                    ? 'bg-indigo-600 scale-125'
+                    : 'bg-gray-300 dark:bg-gray-700'
+                }`}
+              />
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-center gap-6 mt-10">
-          <button
-            onClick={prevProject}
-            className="px-6 py-2 border border-indigo-600 text-indigo-600 
-                       dark:text-indigo-400 dark:border-indigo-400 
-                       rounded-lg hover:bg-indigo-600 hover:text-white transition"
-          >
-            ← Prev
-          </button>
-
-          <button
-            onClick={nextProject}
-            className="px-6 py-2 border border-indigo-600 text-indigo-600 
-                       dark:text-indigo-400 dark:border-indigo-400 
-                       rounded-lg hover:bg-indigo-600 hover:text-white transition"
-          >
-            Next →
-          </button>
-        </div>
-
-        {/* Indicator */}
-        <div className="flex justify-center gap-3 mt-6">
-          {projects.map((_, index) => (
+      {/* Overlay Modal */}
+        {selected !== null && (
+        <div
+            onClick={() => setSelected(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center 
+                    bg-black/60 backdrop-blur-sm px-6"
+        >
             <div
-              key={index}
-              onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full cursor-pointer transition ${
-                current === index
-                  ? 'bg-indigo-600 scale-125'
-                  : 'bg-gray-300 dark:bg-gray-700'
-              }`}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white dark:bg-gray-900 max-w-xl w-full p-8 rounded-2xl shadow-2xl relative"
+            >
+
+            <button
+                onClick={() => setSelected(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl"
+            >
+                ✕
+            </button>
+
+            <img
+                src={projects[selected].image}
+                alt={projects[selected].title}
+                className="w-full h-64 object-cover rounded-xl"
             />
-          ))}
+
+            <h3 className="mt-6 text-2xl font-bold text-gray-900 dark:text-white">
+                {projects[selected].title}
+            </h3>
+
+            <p className="mt-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                {projects[selected].details}
+            </p>
+
+            </div>
         </div>
-      </div>
-    </section>
+        )}
+    </>
   )
 }

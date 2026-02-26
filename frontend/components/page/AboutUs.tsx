@@ -13,12 +13,12 @@ export function AboutUs() {
   return (
     <section
       id="about"
-      className="py-24 px-6 lg:px-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
+      className="py-12 px-6 lg:px-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-300"
     >
       <div className="max-w-6xl mx-auto">
         
         {/* Heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
             About Me
           </h2>
