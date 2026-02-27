@@ -2,6 +2,7 @@
 
 import { FaGithub, FaLinkedinIn } from "react-icons/fa"
 import { MdEmail } from "react-icons/md"
+import exportedData from "@/lib/dummyData"
 
 export default function Footer() {
   return (
@@ -22,25 +23,25 @@ export default function Footer() {
 
         {/* GitHub */}
         <SocialItem
-          href="https://github.com/nugi32"
+          href={exportedData.FooterData.socialLinks[0].url}
           icon={<FaGithub size={22} />}
-          label="GitHub"
+          label={exportedData.FooterData.socialLinks[0].name}
           gradient="from-gray-700 to-gray-900"
         />
 
         {/* Gmail */}
         <SocialItem
-          href="mailto:your@email.com"
+          href={exportedData.FooterData.socialLinks[2].url}
           icon={<MdEmail size={22} />}
-          label="Email"
+          label={exportedData.FooterData.socialLinks[2].name}
           gradient="from-red-500 to-pink-500"
         />
 
         {/* LinkedIn */}
         <SocialItem
-          href="https://linkedin.com/in/yourprofile"
+          href={exportedData.FooterData.socialLinks[1].url}
           icon={<FaLinkedinIn size={22} />}
-          label="LinkedIn"
+          label={exportedData.FooterData.socialLinks[1].name}
           gradient="from-blue-500 to-blue-700"
         />
 

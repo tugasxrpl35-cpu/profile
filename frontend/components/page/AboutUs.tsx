@@ -1,16 +1,11 @@
 'use client'
 
 import FadeInSection from '@/components/FadeInSection';
+import siteData from '../../lib/dummyData';
 
 export function AboutUs() {
-  const skills = [
-    { name: 'Solidity', level: 80 },
-    { name: 'Ethers.js / Wagmi', level: 85 },
-    { name: 'Next.js & React', level: 88 },
-    { name: 'Smart Contract Security', level: 80 },
-    { name: 'DeFi Architecture', level: 85 },
-    { name: 'Node.js', level: 75 },
-  ]
+  const { AboutMeData } = siteData;
+  const skills = AboutMeData.skills;
 
   return (
     <FadeInSection>
@@ -26,8 +21,7 @@ export function AboutUs() {
             About Me
           </h2>
           <p className="mt-4 text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] max-w-2xl mx-auto">
-            Web3 Developer focused on building secure, scalable, and efficient
-            decentralized applications.
+            {AboutMeData.subTitle}
           </p>
         </div>
 
@@ -41,23 +35,21 @@ export function AboutUs() {
             </h3>
 
             <p className="mt-6 text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] leading-relaxed">
-              I specialize in smart contract engineering and decentralized
-              system architecture. My development philosophy emphasizes
-              security-first design, gas optimization, and seamless Web3 UX.
+              {AboutMeData.whoIam}
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-6">
               <div>
-                <h4 className="text-2xl font-bold text-[var(--primary)]">3+</h4>
+                <h4 className="text-2xl font-bold text-[var(--primary)]">{AboutMeData.experience.split(' ')[0]}</h4>
                 <p className="text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] text-sm">
-                  Years Experience
+                  {AboutMeData.experience.split(' ').slice(1).join(' ')}
                 </p>
               </div>
 
               <div>
-                <h4 className="text-2xl font-bold text-[var(--primary)]">20+</h4>
+                <h4 className="text-2xl font-bold text-[var(--primary)]">{AboutMeData.projects.split(' ')[0]}</h4>
                 <p className="text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] text-sm">
-                  Projects Completed
+                  {AboutMeData.projects.split(' ').slice(1).join(' ')}
                 </p>
               </div>
             </div>

@@ -3,14 +3,11 @@
 import Image from 'next/image'
 import ProfileImage from '@/public/Image.jpeg'
 import { ModeToggle } from '@/components/modeTogggle'
-
-const navigation = [
-  { name: 'Projects', href: '#projects' },
-  { name: 'About Me', href: '#about' },
-  { name: 'Contact', href: '#contact' },
-]
-
 import FadeInSection from "@/components/FadeInSection";
+import siteData from '../../lib/dummyData';
+
+const { Landingdata } = siteData;
+const navigation = Landingdata.data.navigation;
 
 export default function LandingPage() {
   return (
@@ -72,18 +69,15 @@ export default function LandingPage() {
           {/* Text Content */}
           <div className="max-w-xl text-center md:text-left">
             <h3 className="text-2xl font-semibold text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)]">
-              Hi, I’m Nugi
+              {Landingdata.data.greeting}
             </h3>
 
             <h2 className="mt-2 text-4xl font-bold text-[var(--text-dark)] dark:text-[var(--text-dark)] leading-tight">
-              Web3 Developer & Blockchain Engineer
+              {Landingdata.data.role}
             </h2>
 
             <p className="mt-6 text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] leading-relaxed">
-              I design and build decentralized applications (dApps) and secure smart contracts
-              with a strong focus on scalability, security, and on-chain efficiency.
-              My expertise spans DeFi protocols, blockchain architecture, and seamless
-              Web3 integrations that bridge user experience with trustless systems.
+              {Landingdata.data.description}
             </p>
 
             <div className="mt-8 flex gap-4 justify-center md:justify-start">

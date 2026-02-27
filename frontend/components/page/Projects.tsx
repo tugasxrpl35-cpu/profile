@@ -2,45 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import FadeInSection from '@/components/FadeInSection'
-
-const projects = [
-  {
-    title: 'DeFi Lending Protocol',
-    image:
-      'https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1200&auto=format&fit=crop',
-    short: 'Decentralized lending and borrowing protocol.',
-    details:
-      'Built with Solidity and Hardhat. Includes collateral logic, liquidation engine, and Chainlink oracle integration.',
-    link: 'https://your-defi-project.com',
-  },
-  {
-    title: 'NFT Marketplace',
-    image:
-      'https://images.unsplash.com/photo-1640340434855-6084b1f4901c?q=80&w=1200&auto=format&fit=crop',
-    short: 'Gas-optimized NFT minting and trading platform.',
-    details:
-      'ERC-721 + ERC-2981 royalty support with IPFS metadata and wallet authentication.',
-    link: 'https://your-nft-marketplace.com',
-  },
-  {
-    title: 'DAO Governance',
-    image:
-      'https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1200&auto=format&fit=crop',
-    short: 'On-chain governance with proposal & voting.',
-    details:
-      'Token-weighted voting, quorum validation & timelock execution.',
-    link: 'https://your-dao-app.com',
-  },
-  {
-    title: 'Web3 Wallet Dashboard',
-    image:
-      'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop',
-    short: 'Multi-chain wallet analytics dashboard.',
-    details:
-      'Aggregates EVM chains, tracks balances & DeFi positions.',
-    link: 'https://your-wallet-dashboard.com',
-  },
-]
+import siteData from '../../lib/dummyData'
+const projects = siteData.ProjectsData.data
 
 export function Projects() {
   const [current, setCurrent] = useState(0)
