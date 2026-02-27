@@ -42,7 +42,7 @@ export default function LandingPage() {
         <section
           id="home"
           className="flex flex-col md:flex-row items-center justify-center 
-                   gap-12 px-6 lg:px-20 pt-32 pb-20"
+                   gap-12 px-6 lg:px-20 pt-32 pb-20 border-b border-[var(--border)]"
         >
           {/* Profile Image */}
           <div className="flex-shrink-0">
@@ -79,16 +79,7 @@ export default function LandingPage() {
                 className="px-6 py-3 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] 
                            hover:bg-opacity-90 transition duration-300"
               >
-                Contact
-              </a>
-
-              <a
-                href="#projects"
-                className="px-6 py-3 rounded-lg border border-[var(--primary)] 
-                           text-[var(--primary)] dark:text-[var(--primary)] 
-                           hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] transition duration-300"
-              >
-                Projects
+                Contact Me
               </a>
             </div>
           </div>
