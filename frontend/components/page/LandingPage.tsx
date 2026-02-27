@@ -28,7 +28,20 @@ export default function LandingPage() {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold text-[var(--text-dark)] dark:text-[var(--text-dark)] hover:text-[var(--primary)] transition"
+                className="relative text-sm font-semibold 
+           text-[var(--text-dark)] 
+           hover:text-[var(--primary)] 
+           transition
+           after:absolute 
+           after:left-1/2 
+           after:-bottom-1 
+           after:h-[2px] 
+           after:w-0 
+           after:bg-[var(--primary)] 
+           after:transition-all 
+           after:duration-300 
+           after:-translate-x-1/2
+           hover:after:w-full"
               >
                 {item.name}
               </a>
