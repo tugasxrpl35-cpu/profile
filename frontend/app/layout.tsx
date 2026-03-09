@@ -1,6 +1,7 @@
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer"
+import { ClerkProvider } from '@clerk/nextjs'
 
 
 export default async function RootLayout({
@@ -18,7 +19,11 @@ export default async function RootLayout({
       disableTransitionOnChange
     >
       <main className="flex-1">
-        {children}
+        
+        <ClerkProvider>
+          {children}
+          </ClerkProvider>
+
       </main>
   <Footer/>
     </ThemeProvider>
