@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/uploadMiddleware");
 const portfolioController = require("../controllers/portfolioController");
+const adminAuth = require("../adminAuth");
 
 // Handle multiple file uploads for landing and projects
 const multiUpload = upload.fields([
@@ -18,7 +19,7 @@ const multiUpload = upload.fields([
   { name: 'projectImage_9', maxCount: 1 }
 ]);
 
-router.post("/", multiUpload, portfolioController.savePortfolio);
+router.post("/", adminAuth, multiUpload, portfolioController.savePortfolio);
 router.get("/", portfolioController.getPortfolio);
 
 module.exports = router;

@@ -188,6 +188,9 @@ export async function savePortfolio(portfolioData: PortfolioPayload): Promise<{ 
 
     const response = await fetch(`${API_URL}/api/portfolio`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`
+      },
       body: form
     })
 
