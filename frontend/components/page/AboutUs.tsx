@@ -1,10 +1,20 @@
-'use client'
+/**
+ * About Us Component
+ * Displays about section with bio, experience, projects, and skills
+ */
+
+'use client';
 
 import FadeInSection from '@/components/FadeInSection';
 import { useEffect, useState } from 'react';
 import { getAbout, AboutData } from '@/lib/api';
 
+/**
+ * About section component that fetches and displays about data
+ * @returns {JSX.Element} The about section layout
+ */
 export function AboutUs() {
+  // State for about page data with default empty values
   const [aboutData, setAboutData] = useState<AboutData>({
     subTitle: '',
     whoIam: '',
@@ -13,11 +23,44 @@ export function AboutUs() {
     skills: []
   });
 
+  // Fetch about data on component mount
   useEffect(() => {
     getAbout().then(setAboutData);
   }, []);
 
-  const skills = aboutData.skills;
+  // Ensure skills is always an array with a fallback to empty array
+  const skills = aboutData.skills ?? [];
+
+  /**
+   * Parse experience text to extract number and description
+   * @param {string} text - Experience text (e.g., "5 Years Experience")
+   * @returns {object} Object with number and label
+   */
+  const parseExperience = (text: string) => {
+    if (!text) return { number: '', label: '' };
+    const parts = text.split(' ');
+    return {
+      number: parts[0],
+      label: parts.slice(1).join(' ')
+    };
+  };
+
+  /**
+   * Parse projects text to extract number and description
+   * @param {string} text - Projects text (e.g., "20+ Projects Completed")
+   * @returns {object} Object with number and label
+   */
+  const parseProjects = (text: string) => {
+    if (!text) return { number: '', label: '' };
+    const parts = text.split(' ');
+    return {
+      number: parts[0],
+      label: parts.slice(1).join(' ')
+    };
+  };
+
+  const experienceData = parseExperience(aboutData.experience);
+  const projectsData = parseProjects(aboutData.projects);
 
   return (
     <FadeInSection>
@@ -52,16 +95,16 @@ export function AboutUs() {
 
             <div className="mt-8 grid grid-cols-2 gap-6">
               <div>
-                <h4 className="text-2xl font-bold text-[var(--primary)]">{aboutData.experience.split(' ')[0]}</h4>
+                <h4 className="text-2xl font-bold text-[var(--primary)]">{experienceData.number}</h4>
                 <p className="text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] text-sm">
-                  {aboutData.experience.split(' ').slice(1).join(' ')}
+                  {experienceData.label}
                 </p>
               </div>
 
               <div>
-                <h4 className="text-2xl font-bold text-[var(--primary)]">{aboutData.projects.split(' ')[0]}</h4>
+                <h4 className="text-2xl font-bold text-[var(--primary)]">{projectsData.number}</h4>
                 <p className="text-[var(--text-dark-secondary)] dark:text-[var(--text-dark-secondary)] text-sm">
-                  {aboutData.projects.split(' ').slice(1).join(' ')}
+                  {projectsData.label}
                 </p>
               </div>
             </div>

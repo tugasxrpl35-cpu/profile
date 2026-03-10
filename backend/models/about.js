@@ -1,5 +1,23 @@
+/**
+ * About Section Model
+ * Defines the schema for the about section of the portfolio
+ */
+
 const mongoose = require("mongoose");
 
+/**
+ * About Schema
+ * @typedef {Object} About
+ * @property {string} subTitle - Subtitle for the about section
+ * @property {string} whoIam - Description of who the person is
+ * @property {string} experience - Professional experience description
+ * @property {string} projects - Projects experience description
+ * @property {Array.<Object>} skills - Array of skills with name and proficiency level
+ * @property {string} skills[].name - Name of the skill
+ * @property {number} skills[].level - Proficiency level (0-100)
+ * @property {Date} createdAt - Timestamp when document was created
+ * @property {Date} updatedAt - Timestamp when document was last updated
+ */
 const aboutSchema = new mongoose.Schema(
   {
     subTitle: { type: String },

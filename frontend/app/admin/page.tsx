@@ -1,29 +1,40 @@
-'use client'
+/**
+ * Admin Page Component
+ * Comprehensive admin interface for managing portfolio content
+ * Features real-time editing, image uploads to Cloudinary, and data persistence
+ */
+export const revalidate = 60;
+'use client';
 
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { SaveIcon, PlusIcon, TrashIcon, CheckCircle , RefreshCwIcon } from "lucide-react"
-import { CheckCircle2Icon, AlertCircleIcon } from "lucide-react"
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { SaveIcon, PlusIcon, TrashIcon, CheckCircle, RefreshCwIcon } from "lucide-react";
+import { CheckCircle2Icon, AlertCircleIcon } from "lucide-react";
 import {
-  // Functions
+  // API Functions
   getLandingPage,
   getProjects,
   getAbout,
   getFooter,
   savePortfolio,
-} from '@/lib/api'
+} from '@/lib/api';
 
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { ModeToggle } from '@/components/modeTogggle';
 
-async function uploadToCloudinary(file: File) {
-  const formData = new FormData()
+/**
+ * Upload image file to Cloudinary
+ * @param {File} file - Image file to upload
+ * @returns {Promise<string>} Secure URL of uploaded image
+ */
+async function uploadToCloudinary(file: File): Promise<string> {
+  const formData = new FormData();
 
-  formData.append("file", file)
-  formData.append("upload_preset", "portfolio_upload")
+  formData.append("file", file);
+  formData.append("upload_preset", "portfolio_upload");
 
   const res = await fetch(
     `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -31,21 +42,25 @@ async function uploadToCloudinary(file: File) {
       method: "POST",
       body: formData
     }
-  )
+  );
 
-  const data = await res.json()
+  const data = await res.json();
 
-  return data.secure_url
+  return data.secure_url;
 }
 
+/**
+ * Main admin page component for portfolio management
+ * Provides interface for editing all portfolio sections with real-time updates
+ */
 export default function AdminPage() {
   const router = useRouter();
-  
-  // Ref terpisah untuk masing-masing section
+
+  // File input refs for image uploads
   const landingFileInputRef = useRef<HTMLInputElement | null>(null);
   const projectFileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // State untuk menyimpan index project yang aktif
+  // State for tracking active project index during image upload
   const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
 
   const handleLandingButtonClick = () => {
@@ -114,73 +129,79 @@ export default function AdminPage() {
   const [updatingSection, setUpdatingSection] = useState<string | null>(null)
 
   /* ================= LOAD ALL DATA ================= */
-  useEffect(() => {
-    const loadAllData = async () => {
-      try {
-        // Load Landing Data
-        const landingData = await getLandingPage();
-        const landingImageUrl = landingData?.profilePicture || "";
+  const loadAllData = async () => {
+    try {
+      // Load Landing Data
+      const landingData = await getLandingPage();
+      const landingImageUrl = landingData?.profilePicture || "";
 
-        // Load Projects Data
-        const projectsData = await getProjects();
-        
-        // Process projects images
-        const processedProjects = projectsData?.map((project: any) => ({
-          ...project,
-          preview: project.image || "",
-          imageFile: null
-        })) || [];
+      // Load Projects Data
+      const projectsData = await getProjects();
 
-        // Load About Data
-        const aboutData = await getAbout();
+      // Process projects images
+      const processedProjects = projectsData?.map((project: any) => ({
+        ...project,
+        preview: project.image || "",
+        imageFile: null
+      })) || [];
 
-        // Load Footer Data
-        const footerData = await getFooter();
+      // Load About Data
+      const aboutData = await getAbout();
+      console.log("[admin] Loaded about data:", aboutData);
 
-        setPortfolioData((prev: any) => ({
-          ...prev,
-          Landingdata: {
-            ...prev.Landingdata,
-            data: {
-              ...prev.Landingdata.data,
-              greeting: landingData?.greeting || "",
-              role: landingData?.role || "",
-              description: landingData?.description || "",
-              profilePicture: landingData?.profilePicture || "",
-              preview: landingImageUrl
-            }
-          },
-          ProjectsData: {
-            ...prev.ProjectsData,
-            data: processedProjects
-          },
-          AboutMeData: {
-            subTitle: aboutData?.subTitle || "",
-            whoIam: aboutData?.whoIam || "",
-            experience: aboutData?.experience || "",
-            projects: aboutData?.projects || "",
-            skills: aboutData?.skills || []
-          },
-          FooterData: {
-            title: footerData?.title || "",
-            socialLinks: footerData?.socialLinks || []
+      // Load Footer Data
+      const footerData = await getFooter();
+      console.log("[admin] Loaded footer data:", footerData);
+
+      console.log("[admin] Setting portfolio data...");
+
+      setPortfolioData((prev: any) => ({
+        ...prev,
+        Landingdata: {
+          ...prev.Landingdata,
+          data: {
+            ...prev.Landingdata.data,
+            greeting: landingData?.greeting || "",
+            role: landingData?.role || "",
+            description: landingData?.description || "",
+            profilePicture: landingData?.profilePicture || "",
+            preview: landingImageUrl
           }
-        }));
+        },
+        ProjectsData: {
+          ...prev.ProjectsData,
+          data: processedProjects
+        },
+        AboutMeData: {
+          subTitle: aboutData?.subTitle || "",
+          whoIam: aboutData?.whoIam || "",
+          experience: aboutData?.experience || "",
+          projects: aboutData?.projects || "",
+          skills: aboutData?.skills || []
+        },
+        FooterData: {
+          title: footerData?.title || "",
+          socialLinks: footerData?.socialLinks || []
+        }
+      }));
 
-        // Reset dirty fields after loading
-        setDirtyFields({
-          landing: {},
-          projects: {},
-          about: {},
-          aboutSkills: {},
-          footer: {},
-          footerSocials: {}
-        });
-      } catch (err) {
-        console.error("Failed to load portfolio data", err);
-      }
-    };
+      console.log("[admin] Portfolio data set successfully");
 
+      // Reset dirty fields after loading
+      setDirtyFields({
+        landing: {},
+        projects: {},
+        about: {},
+        aboutSkills: {},
+        footer: {},
+        footerSocials: {}
+      });
+    } catch (err) {
+      console.error("Failed to load portfolio data", err);
+    }
+  };
+
+  useEffect(() => {
     loadAllData();
   }, []);
 
@@ -480,6 +501,27 @@ export default function AdminPage() {
       image: p.image
     }))
 
+    // Clean up About data to only include necessary fields
+    payload.AboutMeData = {
+      subTitle: payload.AboutMeData.subTitle,
+      whoIam: payload.AboutMeData.whoIam,
+      experience: payload.AboutMeData.experience,
+      projects: payload.AboutMeData.projects,
+      skills: payload.AboutMeData.skills.map((skill: any) => ({
+        name: skill.name,
+        level: skill.level
+      }))
+    }
+
+    // Clean up Footer data to only include necessary fields
+    payload.FooterData = {
+      title: payload.FooterData.title,
+      socialLinks: payload.FooterData.socialLinks.map((social: any) => ({
+        name: social.name,
+        url: social.url
+      }))
+    }
+
     /* ================= LANDING IMAGE ================= */
 
     if (portfolioData.Landingdata.data.profilePictureFile) {
@@ -540,8 +582,10 @@ export default function AdminPage() {
 
   const closeAlert = () => {
     setAlert(null)
-    // Auto refresh page after alert is closed
-    router.refresh()
+    // Instead of router.refresh(), reload data from API
+    if (alert?.type === 'success') {
+      loadAllData();
+    }
   }
 
   return (

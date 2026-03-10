@@ -1,4 +1,9 @@
-'use client'
+/**
+ * Landing Page Component
+ * Hero section of the portfolio with profile picture, greeting, and navigation
+ */
+
+'use client';
 
 import Image from 'next/image';
 import { ModeToggle } from '@/components/modeTogggle';
@@ -7,13 +12,20 @@ import { useEffect, useState } from 'react';
 import { getLandingPage, LandingData } from '@/lib/api';
 import defaultProfile from '@/public/defaultProfile.jpg';
 
+// Default navigation items
 const defaultNavigation = [
   { name: 'Projects', href: '#projects' },
   { name: 'About Me', href: '#about' },
   { name: 'Contact', href: '#contact' },
 ];
 
+/**
+ * Landing page component that displays the hero section
+ * Fetches and displays landing page data from the API
+ * @returns {JSX.Element} The landing page layout
+ */
 export default function LandingPage() {
+  // State for landing page data
   const [landingData, setLandingData] = useState<LandingData>({
     greeting: '',
     role: '',
@@ -21,6 +33,7 @@ export default function LandingPage() {
     profilePicture: ''
   });
 
+  // Fetch landing data on component mount
   useEffect(() => {
     getLandingPage().then(setLandingData);
   }, []);

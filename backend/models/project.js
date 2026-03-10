@@ -1,5 +1,21 @@
+/**
+ * Project Model
+ * Defines the schema for individual projects in the portfolio
+ */
+
 const mongoose = require("mongoose");
 
+/**
+ * Project Schema
+ * @typedef {Object} Project
+ * @property {string} title - Project title (required)
+ * @property {string} short - Short description of the project
+ * @property {string} details - Detailed description of the project
+ * @property {string} link - URL to the project (e.g., GitHub, live demo)
+ * @property {string} image - URL to project image (hosted on Cloudinary)
+ * @property {Date} createdAt - Timestamp when document was created
+ * @property {Date} updatedAt - Timestamp when document was last updated
+ */
 const projectSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -16,7 +32,7 @@ const projectSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: null
+    default: null // Cloudinary URL
   }
 }, { timestamps: true });
 
