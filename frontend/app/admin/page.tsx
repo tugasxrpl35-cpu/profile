@@ -3,7 +3,6 @@
  * Comprehensive admin interface for managing portfolio content
  * Features real-time editing, image uploads to Cloudinary, and data persistence
  */
-export const revalidate = 60;
 'use client';
 
 import { useState } from "react";

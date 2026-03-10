@@ -3,6 +3,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer"
 import { ClerkProvider } from '@clerk/nextjs'
 
+export const revalidate = 60;
+
 
 export default async function RootLayout({
   children,
