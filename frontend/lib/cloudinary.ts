@@ -10,10 +10,10 @@
  * @throws {Error} If the upload fails
  */
 export async function uploadImage(file: File): Promise<string> {
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
 
   if (!cloudName) {
-    throw new Error('NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable is not set');
+    throw new Error('CLOUDINARY_CLOUD_NAME environment variable is not set');
   }
 
   // Prepare form data for upload

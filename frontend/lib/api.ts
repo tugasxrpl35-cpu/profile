@@ -244,7 +244,7 @@ export async function savePortfolio(portfolioData: PortfolioPayload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_ADMIN_TOKEN}`
+      Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
     },
     body: JSON.stringify(payload)
   });
