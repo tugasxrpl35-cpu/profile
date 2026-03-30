@@ -5,7 +5,6 @@ import { ClerkProvider } from '@clerk/nextjs'
 
 export const revalidate = 60;
 
-
 export default async function RootLayout({
   children,
 }: {
@@ -21,7 +20,7 @@ export default async function RootLayout({
       disableTransitionOnChange
     >
       <main className="flex-1">
-        
+
         <ClerkProvider>
           {children}
           </ClerkProvider>

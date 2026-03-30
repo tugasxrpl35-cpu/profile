@@ -19,6 +19,7 @@ import {
   savePortfolio,
 } from '@/lib/api';
 
+import { uploadImage } from '@/lib/cloudinary';
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -30,22 +31,12 @@ import { ModeToggle } from '@/components/modeTogggle';
  * @returns {Promise<string>} Secure URL of uploaded image
  */
 async function uploadToCloudinary(file: File): Promise<string> {
-  const formData = new FormData();
-
-  formData.append("file", file);
-  formData.append("upload_preset", "portfolio_upload");
-
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-    {
-      method: "POST",
-      body: formData
-    }
-  );
-
-  const data = await res.json();
-
-  return data.secure_url;
+  try {
+    return await uploadImage(file);
+  } catch (error) {
+    console.error('Cloudinary upload failed:', error);
+    throw error;
+  }
 }
 
 /**

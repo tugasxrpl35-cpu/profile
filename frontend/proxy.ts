@@ -2,10 +2,10 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
-const allowedUserIds =
-  process.env.ADMIN_USER_IDS?.split(",").map((e) => e.trim()) || [];
-
 export default clerkMiddleware(async (auth, req) => {
+  const allowedUserIds =
+    process.env.ADMIN_USER_IDS?.split(",").map((e) => e.trim()) || [];
+
   if (isAdminRoute(req)) {
     await auth.protect();
 

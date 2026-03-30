@@ -10,6 +10,12 @@
  * @throws {Error} If the upload fails
  */
 export async function uploadImage(file: File): Promise<string> {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+  if (!cloudName) {
+    throw new Error('NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable is not set');
+  }
+
   // Prepare form data for upload
   const formData = new FormData();
   formData.append("file", file);
@@ -17,7 +23,7 @@ export async function uploadImage(file: File): Promise<string> {
 
   // Upload to Cloudinary
   const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
     {
       method: "POST",
       body: formData
