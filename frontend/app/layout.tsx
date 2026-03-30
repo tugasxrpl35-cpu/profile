@@ -21,7 +21,7 @@ export default async function RootLayout({
     >
       <main className="flex-1">
 
-        <ClerkProvider>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
           {children}
           </ClerkProvider>
 
