@@ -1,7 +1,7 @@
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Footer from "@/components/footer"
-import { ClerkProvider } from '@clerk/nextjs'
+import Providers from "./providers";
 
 export const revalidate = 60;
 
@@ -20,11 +20,9 @@ export default async function RootLayout({
       disableTransitionOnChange
     >
       <main className="flex-1">
-
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+        <Providers>
           {children}
-          </ClerkProvider>
-
+        </Providers>
       </main>
   <Footer/>
     </ThemeProvider>

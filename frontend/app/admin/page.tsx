@@ -24,6 +24,9 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { ModeToggle } from '@/components/modeTogggle';
+import { useSession, signIn } from "next-auth/react";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 /**
  * Upload image file to Cloudinary
@@ -45,6 +48,14 @@ async function uploadToCloudinary(file: File): Promise<string> {
  */
 export default function AdminPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "loading") return; // Still loading
+    if (!session) {
+      router.push("/login");
+    }
+  }, [session, status, router]);
 
   // File input refs for image uploads
   const landingFileInputRef = useRef<HTMLInputElement | null>(null);
@@ -638,34 +649,45 @@ export default function AdminPage() {
       )}
 
       {/* Header Section */}
-<div className="flex items-center justify-between mb-8">
-  <h1 className="text-3xl font-bold text-[var(--foreground)]">
-    Admin Dashboard
-  </h1>
+    <div className="relative flex items-center justify-between mb-8">
+      
+      {/* LEFT */}
+      <Link
+        href="/"
+        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+      >
+        <FaArrowLeft className="w-5 h-5" />
+      </Link>
 
-  <div className="flex items-center gap-3">
-    <Button
-      onClick={saveAllData}
-      disabled={updatingSection === 'all'}
-      size="lg"
-      className="px-6 py-2"
-    >
-      {updatingSection === 'all' ? (
-        <>
-          <RefreshCwIcon className="w-4 h-4 mr-2 animate-spin" />
-          Saving All...
-        </>
-      ) : (
-        <>
-          <SaveIcon className="w-4 h-4 mr-2" />
-          Save All Portfolio
-        </>
-      )}
-    </Button>
+      {/* CENTER (fix) */}
+      <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl md:text-3xl font-bold text-[var(--foreground)]">
+        Admin Dashboard
+      </h1>
 
-    <ModeToggle />
-  </div>
-</div>
+      {/* RIGHT */}
+      <div className="flex items-center gap-3">
+        <Button
+          onClick={saveAllData}
+          disabled={updatingSection === 'all'}
+          size="lg"
+          className="px-5 py-2 flex items-center"
+        >
+          {updatingSection === 'all' ? (
+            <>
+              <RefreshCwIcon className="w-4 h-4 mr-2 animate-spin" />
+              Saving All...
+            </>
+          ) : (
+            <>
+              <SaveIcon className="w-4 h-4 mr-2" />
+              Save All Portfolio
+            </>
+          )}
+        </Button>
+
+        <ModeToggle />
+      </div>
+    </div>
 
       {/* LANDING SECTION */}
       <div className="mb-8 p-6 bg-[var(--card)] dark:bg-[var(--card)] rounded-lg border border-[var(--border)] shadow-sm">
