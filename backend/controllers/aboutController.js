@@ -3,7 +3,7 @@
  * Handles operations for the about section of the portfolio
  */
 
-const About = require("../models/about");
+import About from "../models/about.js";
 
 /**
  * Retrieve about section data

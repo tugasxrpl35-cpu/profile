@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
+import projectController from "../controllers/projectController.js";
+import adminAuth from "../adminAuth.js";
 const router = express.Router();
-const projectController = require("../controllers/projectController");
-const adminAuth = require("../adminAuth");
 
 router.get("/", projectController.getProjects);
 router.get("/:id", projectController.getProject);

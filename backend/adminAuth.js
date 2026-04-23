@@ -3,7 +3,7 @@
  * Verifies JWT tokens and ensures admin role for protected routes
  */
 
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 /**
  * Middleware function to authenticate admin users

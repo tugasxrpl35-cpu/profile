@@ -1,4 +1,4 @@
-const Landing = require("../models/landing");
+import Landing from "../models/landing.js";
 
 // Create landing entry
 exports.createLanding = async (req, res) => {

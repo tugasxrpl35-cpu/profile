@@ -3,10 +3,10 @@
  * Defines API endpoints for about section management
  */
 
-const express = require("express");
+import express from "express";
+import aboutController from "../controllers/aboutController.js";
+import adminAuth from "../adminAuth.js";
 const router = express.Router();
-const aboutController = require("../controllers/aboutController");
-const adminAuth = require("../adminAuth");
 
 // GET /api/about - Retrieve about section data
 router.get("/", aboutController.getAbout);

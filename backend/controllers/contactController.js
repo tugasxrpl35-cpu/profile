@@ -1,4 +1,4 @@
-const Contact = require("../models/contact");
+import Contact from "../models/contact.js";
 
 // GET contact info (returns first/latest entry)
 exports.getContact = async (req, res) => {

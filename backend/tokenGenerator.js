@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken")
+import jwt from "jsonwebtoken";
 
-const secret = "SUPER_SECRET_KEY"
+const secret = "SUPER_SECRET_KEY";
 
 const token = jwt.sign(
   { role: "admin" },
   secret,
   { expiresIn: "365d" }
-)
+);
 
-console.log("ADMIN TOKEN:")
-console.log(token)
+console.log("ADMIN TOKEN:");
+console.log(token);

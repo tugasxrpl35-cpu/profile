@@ -1,4 +1,4 @@
-const Footer = require("../models/footer");
+import Footer from "../models/footer.js";
 
 // Create footer entry
 exports.createFooter = async (req, res) => {

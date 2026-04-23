@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
+import footerController from "../controllers/footerController.js";
+import adminAuth from "../adminAuth.js";
 const router = express.Router();
-const footerController = require("../controllers/footerController");
-const adminAuth = require("../adminAuth");
 
 router.get("/", footerController.getFooter);
 router.post("/", adminAuth, footerController.createFooter);

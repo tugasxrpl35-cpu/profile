@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
+import contactController from "../controllers/contactController.js";
+import adminAuth from "../adminAuth.js";
 const router = express.Router();
-const contactController = require("../controllers/contactController");
-const adminAuth = require("../adminAuth");
 
 router.get("/", contactController.getContact);
 router.post("/", adminAuth, contactController.saveContact);
