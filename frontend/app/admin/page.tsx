@@ -48,6 +48,7 @@ async function uploadToCloudinary(file: File): Promise<string> {
  */
 export default function AdminPage() {
   const router = useRouter();
+  
   const { data: session, status } = useSession();
 
   useEffect(() => {

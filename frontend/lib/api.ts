@@ -208,24 +208,25 @@ export async function getContact(): Promise<ContactData> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * Fetch complete portfolio data from the API
+ * @returns {Promise<CompletePortfolio>} Complete portfolio data
+ */
+export async function getPortfolio(): Promise<CompletePortfolio> {
+  try {
+    const response = await fetch(`${API_URL}/api/portfolio`);
+    if (!response.ok) throw new Error("Failed to fetch portfolio");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching portfolio:", error);
+    return {
+      Landingdata: { section: "LandingPage", data: { greeting: "", role: "", description: "", profilePicture: "" } },
+      ProjectsData: { section: "ProjectsPage", data: [] },
+      AboutMeData: { subTitle: "", whoIam: "", experience: "", projects: "", skills: [] },
+      FooterData: { title: "", socialLinks: [] }
+    };
+  }
+}
 
 // ================= PORTFOLIO (Save All) =================
 
@@ -259,16 +260,20 @@ export async function savePortfolio(portfolioData: PortfolioPayload) {
     footer: portfolioData.FooterData
   };
 
-  const response = await fetch(`${API_URL}/api/portfolio`, {
+  const response = await fetch("/api/save-portfolio", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.ADMIN_TOKEN}`
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   });
 
-  if (!response.ok) throw new Error("Failed to save portfolio");
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Status:", response.status);
+    console.error("Response:", errorText);
+    throw new Error("Failed to save portfolio");
+  }
 
   return response.json();
 }
@@ -289,24 +294,4 @@ export interface CompletePortfolio {
   };
   AboutMeData: AboutData;
   FooterData: FooterData;
-}
-
-/**
- * Fetch complete portfolio data from the API
- * @returns {Promise<CompletePortfolio>} Complete portfolio data
- */
-export async function getPortfolio(): Promise<CompletePortfolio> {
-  try {
-    const response = await fetch(`${API_URL}/api/portfolio`);
-    if (!response.ok) throw new Error("Failed to fetch portfolio");
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching portfolio:", error);
-    return {
-      Landingdata: { section: "LandingPage", data: { greeting: "", role: "", description: "", profilePicture: "" } },
-      ProjectsData: { section: "ProjectsPage", data: [] },
-      AboutMeData: { subTitle: "", whoIam: "", experience: "", projects: "", skills: [] },
-      FooterData: { title: "", socialLinks: [] }
-    };
-  }
 }

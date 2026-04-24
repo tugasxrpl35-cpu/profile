@@ -8,6 +8,7 @@ import landingRoutes from "./routes/landingRoutes.js";
 import aboutRoutes from "./routes/aboutRoutes.js";
 import footerRoutes from "./routes/footerRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import portfolioRoutes from "./routes/portfolioRoutes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/api/landing", landingRoutes);
 app.use("/api/about", aboutRoutes);
 app.use("/api/footer", footerRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/portfolio", portfolioRoutes);
 
 const startServer = async () => {
   try {

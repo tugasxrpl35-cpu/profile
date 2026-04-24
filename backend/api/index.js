@@ -7,6 +7,7 @@ import landingRoutes from "../routes/landingRoutes.js";
 import aboutRoutes from "../routes/aboutRoutes.js";
 import footerRoutes from "../routes/footerRoutes.js";
 import contactRoutes from "../routes/contactRoutes.js";
+import portfolioRoutes from "../routes/portfolioRoutes.js";
 
 const app = express();
 
@@ -31,7 +32,8 @@ app.get("/users", async (req, res) => {
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://nugiprofile.netlify.app"
+    "https://nugiprofile.netlify.app",
+    "https://nugi-profile.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
@@ -42,5 +44,10 @@ app.use("/api/landing", landingRoutes);
 app.use("/api/about", aboutRoutes);
 app.use("/api/footer", footerRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/portfolio", portfolioRoutes);
 
-export default app;
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Server is running on port ${process.env.PORT || 5000}`);
+})
+
+//export default app;
