@@ -1,5 +1,6 @@
 import express from "express";
 import { connectDB } from "../lib/mongodb.js";
+import cors from "cors";
 
 import projectRoutes from "../routes/projectRoutes.js";
 import landingRoutes from "../routes/landingRoutes.js";
@@ -26,6 +27,15 @@ app.get("/users", async (req, res) => {
 
   res.json(users);
 });
+
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://nugiprofile.netlify.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 app.use("/api/projects", projectRoutes);
 app.use("/api/landing", landingRoutes);
