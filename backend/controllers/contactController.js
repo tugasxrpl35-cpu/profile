@@ -1,7 +1,7 @@
 import Contact from "../models/contact.js";
 
 // GET contact info (returns first/latest entry)
-exports.getContact = async (req, res) => {
+export const getContact = async (req, res) => {
   try {
     let contact = await Contact.findOne().sort({ createdAt: -1 });
     if (!contact) {
@@ -21,7 +21,7 @@ exports.getContact = async (req, res) => {
 };
 
 // CREATE/UPDATE contact info
-exports.saveContact = async (req, res) => {
+export const saveContact = async (req, res) => {
   try {
     if (!req.body.email) {
       return res.status(400).json({ message: "Email is required" });

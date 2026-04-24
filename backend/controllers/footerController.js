@@ -1,7 +1,7 @@
 import Footer from "../models/footer.js";
 
 // Create footer entry
-exports.createFooter = async (req, res) => {
+export const createFooter = async (req, res) => {
   try {
     const newFooter = new Footer({
       title: req.body.title,
@@ -16,7 +16,7 @@ exports.createFooter = async (req, res) => {
 };
 
 // Get all footer entries
-exports.getFooter = async (req, res) => {
+export const getFooter = async (req, res) => {
   try {
     const entries = await Footer.find().sort({ createdAt: -1 });
     res.json(entries);
@@ -26,7 +26,7 @@ exports.getFooter = async (req, res) => {
 };
 
 // Update footer
-exports.updateFooter = async (req, res) => {
+export const updateFooter = async (req, res) => {
   try {
     const updated = await Footer.findByIdAndUpdate(
       req.params.id,
@@ -48,7 +48,7 @@ exports.updateFooter = async (req, res) => {
 };
 
 // Delete footer
-exports.deleteFooter = async (req, res) => {
+export const deleteFooter = async (req, res) => {
   try {
     await Footer.findByIdAndDelete(req.params.id);
     res.json({ message: "Footer deleted" });

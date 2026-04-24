@@ -1,9 +1,9 @@
 import express from "express";
-import landingController from "../controllers/landingController.js";
+import {createLanding, getLanding} from "../controllers/landingController.js";
 import adminAuth from "../adminAuth.js";
 const router = express.Router();
 
-router.get("/", landingController.getLanding);
-router.post("/", adminAuth, landingController.createLanding);
+router.get("/", getLanding);
+router.post("/", adminAuth, createLanding);
 
-module.exports = router;
+export default router;

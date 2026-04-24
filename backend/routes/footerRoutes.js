@@ -1,11 +1,11 @@
 import express from "express";
-import footerController from "../controllers/footerController.js";
+import {createFooter, getFooter, updateFooter, deleteFooter} from "../controllers/footerController.js";
 import adminAuth from "../adminAuth.js";
 const router = express.Router();
 
-router.get("/", footerController.getFooter);
-router.post("/", adminAuth, footerController.createFooter);
-router.put("/:id", adminAuth, footerController.updateFooter);
-router.delete("/:id", adminAuth, footerController.deleteFooter);
+router.get("/", getFooter);
+router.post("/", adminAuth, createFooter);
+router.put("/:id", adminAuth, updateFooter);
+router.delete("/:id", adminAuth, deleteFooter);
 
-module.exports = router;
+export default router;

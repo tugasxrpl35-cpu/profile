@@ -11,7 +11,7 @@ import About from "../models/about.js";
  * @param {Object} res - Express response object
  * @returns {Object} JSON response with about data or error
  */
-exports.getAbout = async (req, res) => {
+export const getAbout = async (req, res) => {
   try {
     const aboutData = await About.findOne().sort({ createdAt: -1 });
     
@@ -38,7 +38,7 @@ exports.getAbout = async (req, res) => {
  * @param {Object} res - Express response object
  * @returns {Object} JSON response with saved about data or error
  */
-exports.createAbout = async (req, res) => {
+export const createAbout = async (req, res) => {
   try {
     const { subTitle, whoIam, experience, projects, skills } = req.body;
 

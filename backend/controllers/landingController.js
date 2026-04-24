@@ -1,7 +1,7 @@
 import Landing from "../models/landing.js";
 
 // Create landing entry
-exports.createLanding = async (req, res) => {
+export const createLanding = async (req, res) => {
   try {
     const newLanding = new Landing({
       greeting: req.body.greeting,
@@ -18,7 +18,7 @@ exports.createLanding = async (req, res) => {
 };
 
 // Get all landing entries (or latest)
-exports.getLanding = async (req, res) => {
+export const getLanding = async (req, res) => {
   try {
     const entries = await Landing.find().sort({ createdAt: -1 });
     res.json(entries);

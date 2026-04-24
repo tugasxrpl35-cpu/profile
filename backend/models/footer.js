@@ -3,7 +3,7 @@
  * Defines the schema for the footer section of the portfolio
  */
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 /**
  * Footer Schema
@@ -26,4 +26,5 @@ const footerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Footer", footerSchema);
+const Footer = mongoose.model("Footer", footerSchema);
+export default Footer;

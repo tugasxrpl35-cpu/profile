@@ -1,7 +1,7 @@
 import Project from "../models/project.js";
 
 // GET all
-exports.getProjects = async (req, res) => {
+export const getProjects = async (req, res) => {
   try {
     const projects = await Project.find().sort({ createdAt: -1 });
     res.json(projects);
@@ -11,7 +11,7 @@ exports.getProjects = async (req, res) => {
 };
 
 // GET single
-exports.getProject = async (req, res) => {
+export const getProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
@@ -24,7 +24,7 @@ exports.getProject = async (req, res) => {
 };
 
 // CREATE
-exports.createProject = async (req, res) => {
+export const createProject = async (req, res) => {
   try {
     if (!req.body.title) {
       return res.status(400).json({ message: "Title is required" });
@@ -47,7 +47,7 @@ exports.createProject = async (req, res) => {
 };
 
 // UPDATE
-exports.updateProject = async (req, res) => {
+export const updateProject = async (req, res) => {
   try {
     const updateData = {
       title: req.body.title,
@@ -77,7 +77,7 @@ exports.updateProject = async (req, res) => {
 };
 
 // DELETE
-exports.deleteProject = async (req, res) => {
+export const deleteProject = async (req, res) => {
   try {
     await Project.findByIdAndDelete(req.params.id);
     res.json({ message: "Project deleted" });

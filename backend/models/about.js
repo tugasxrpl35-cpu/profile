@@ -3,7 +3,7 @@
  * Defines the schema for the about section of the portfolio
  */
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 /**
  * About Schema
@@ -32,4 +32,5 @@ const aboutSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("About", aboutSchema);
+const About = mongoose.model("About", aboutSchema);
+export default About;

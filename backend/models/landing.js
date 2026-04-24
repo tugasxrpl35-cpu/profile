@@ -3,7 +3,7 @@
  * Defines the schema for the landing page section of the portfolio
  */
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 /**
  * Landing Schema
@@ -25,4 +25,5 @@ const landingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Landing", landingSchema);
+const Landing = mongoose.model("Landing", landingSchema);
+export default Landing;

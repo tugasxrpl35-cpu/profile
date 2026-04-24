@@ -3,7 +3,7 @@
  * Defines the schema for individual projects in the portfolio
  */
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 /**
  * Project Schema
@@ -36,4 +36,5 @@ const projectSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model("Project", projectSchema);
+const Project = mongoose.model("Project", projectSchema);
+export default Project;

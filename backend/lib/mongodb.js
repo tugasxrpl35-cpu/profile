@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const MONGODB_URI = process.env.MONGO_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI belum di-set");
+  throw new Error("MONGODB_URI is not defined in environment variables");
 }
 
 let cached = global.mongoose;
@@ -13,6 +15,7 @@ if (!cached) {
 }
 
 export async function connectDB() {
+
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
