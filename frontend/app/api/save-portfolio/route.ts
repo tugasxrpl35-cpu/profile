@@ -12,7 +12,5 @@ export async function POST(req: Request) {
 
   const text = await response.text();
 
-  console.log("TOKEN SERVER:", process.env.ADMIN_TOKEN);
-
   return new Response(text, { status: response.status });
 }

@@ -41,7 +41,6 @@ function adminAuth(req, res, next) {
 
   } catch (error) {
     console.log("JWT verify error:", error.message);
-    console.log("SECRET BACKEND:", JSON.stringify(process.env.JWT_SECRET));
     return res.status(403).json({ message: "Invalid token" });
   }
 }
