@@ -3,8 +3,6 @@
  * Handles operations for the about section of the portfolio
  */
 
-import About from "../models/about.js";
-
 /**
  * Retrieve about section data
  * @param {Object} req - Express request object
@@ -67,13 +65,25 @@ export const createAbout = async (req, res) => {
       skills: skills || []
     };
 
-    // Find and update existing, or create new
-    const updated = await About.findOneAndUpdate(
-      {},
-      aboutData,
-      { new: true, upsert: true, sort: { createdAt: -1 } }
-    );
+    const response = await fetch(process.env.DB_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "DB_PW": process.env.DB_PW
+      },
+      body: JSON.stringify(aboutData)
+    });
 
+    const text = await response.text();
+
+    console.log("STATUS:", response.status);
+    console.log("RESPONSE:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${text}`);
+    }
+
+    const updated = await response.json();
     res.status(201).json(updated);
   } catch (error) {
     console.error("Create about error:", error);

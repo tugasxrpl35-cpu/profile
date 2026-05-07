@@ -1,11 +1,26 @@
-import Contact from "../models/contact.js";
-
 // GET contact info (returns first/latest entry)
 export const getContact = async (req, res) => {
   try {
-    let contact = await Contact.findOne().sort({ createdAt: -1 });
+    const response = await fetch(process.env.DB_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "DB_PW": process.env.DB_PW
+      }
+    });
+
+    const text = await response.text();
+
+    console.log("STATUS:", response.status);
+    console.log("RESPONSE:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${text}`);
+    }
+
+    const contact = await response.json();
+
     if (!contact) {
-      // Return empty object if no contact exists yet
       return res.json({
         email: "",
         github: "",
@@ -13,6 +28,7 @@ export const getContact = async (req, res) => {
         twitter: ""
       });
     }
+
     res.json(contact);
   } catch (error) {
     console.error("Get contact error:", error);
@@ -27,24 +43,32 @@ export const saveContact = async (req, res) => {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    // Upsert - update if exists, create if not
-    let contact = await Contact.findOne();
-    
-    if (contact) {
-      contact.email = req.body.email;
-      contact.github = req.body.github || "";
-      contact.linkedin = req.body.linkedin || "";
-      contact.twitter = req.body.twitter || "";
-    } else {
-      contact = new Contact({
-        email: req.body.email,
-        github: req.body.github || "",
-        linkedin: req.body.linkedin || "",
-        twitter: req.body.twitter || ""
-      });
+    const contactData = {
+      email: req.body.email,
+      github: req.body.github || "",
+      linkedin: req.body.linkedin || "",
+      twitter: req.body.twitter || ""
+    };
+
+    const response = await fetch(process.env.DB_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "DB_PW": process.env.DB_PW
+      },
+      body: JSON.stringify(contactData)
+    });
+
+    const text = await response.text();
+
+    console.log("STATUS:", response.status);
+    console.log("RESPONSE:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${text}`);
     }
 
-    const saved = await contact.save();
+    const saved = await response.json();
     res.status(200).json(saved);
   } catch (error) {
     console.error("Save contact error:", error);

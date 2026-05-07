@@ -2,10 +2,6 @@
  * Portfolio Controller
  * Handles operations for saving and retrieving complete portfolio data
  */
-import Landing from "../models/landing.js";
-import Project from "../models/project.js";
-import About from "../models/about.js";
-import Footer from "../models/footer.js";
 
 /**
  * Save entire portfolio data including landing, projects, about, and footer sections
@@ -20,104 +16,28 @@ export const savePortfolio = async (req, res) => {
       return res.status(400).json({ message: "No data provided" });
     }
 
-    // 1. Save Landing Data
-    if (portfolioData.landing) {
-      // Log payload for debugging purposes
-      console.log("[portfolioController] landing payload:", portfolioData.landing);
+    const payload = { action: "save", data: portfolioData };
 
-      const landingData = {
-        greeting: portfolioData.landing.greeting,
-        role: portfolioData.landing.role,
-        description: portfolioData.landing.description,
-        profilePicture: portfolioData.landing.profilePicture // Cloudinary URL from payload
-      };
+    const response = await fetch(process.env.DB_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "DB_PW": process.env.DB_PW
+      },
+      body: JSON.stringify(payload)
+    });
 
-      // Upsert operation: update if exists, create if not
-      // Uses sort to ensure we update the most recent document
-      await Landing.findOneAndUpdate({}, landingData, {
-        upsert: true,
-        sort: { createdAt: -1 }
-      });
+    const text = await response.text();
+
+    console.log("STATUS:", response.status);
+    console.log("RESPONSE:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${text}`);
     }
 
-    // 2. Save Projects Data
-    if (portfolioData.projects) {
-      // Delete all existing projects before creating new ones
-      await Project.deleteMany({});
-
-      // Create new projects from the payload
-      for (let i = 0; i < portfolioData.projects.length; i++) {
-        const projectItem = portfolioData.projects[i];
-        const projectData = {
-          title: projectItem.title,
-          short: projectItem.short,
-          details: projectItem.details,
-          link: projectItem.link,
-          image: projectItem.image // Cloudinary URL from payload
-        };
-
-        await Project.create(projectData);
-      }
-    }
-
-    // 3. Save About Data
-    if (portfolioData.about) {
-      console.log("[portfolioController] about payload:", portfolioData.about);
-
-      const aboutData = {
-        subTitle: portfolioData.about.subTitle || "",
-        whoIam: portfolioData.about.whoIam || "",
-        experience: portfolioData.about.experience || "",
-        projects: portfolioData.about.projects || "",
-        skills: Array.isArray(portfolioData.about.skills) ? portfolioData.about.skills : []
-      };
-
-      console.log("[portfolioController] about data to save:", aboutData);
-
-      try {
-        // Try to find existing About document
-        const existingAbout = await About.findOne().sort({ createdAt: -1 });
-
-        if (existingAbout) {
-          // Update existing
-          const updated = await About.findOneAndUpdate(
-            { _id: existingAbout._id },
-            aboutData,
-            { new: true }
-          );
-          console.log("[portfolioController] About updated successfully:", updated);
-        } else {
-          // Create new
-          const newAbout = new About(aboutData);
-          const saved = await newAbout.save();
-          console.log("[portfolioController] About created successfully:", saved);
-        }
-
-        // Verify the save by fetching it back
-        const verifyAbout = await About.findOne().sort({ createdAt: -1 });
-        console.log("[portfolioController] About verification - found in DB:", verifyAbout);
-
-      } catch (aboutError) {
-        console.error("[portfolioController] About save error:", aboutError);
-        throw aboutError;
-      }
-    }
-
-    // 4. Save Footer Data
-    if (portfolioData.footer) {
-      const footerData = {
-        title: portfolioData.footer.title,
-        socialLinks: portfolioData.footer.socialLinks || []
-      };
-
-      // Update the most recent footer document
-      await Footer.findOneAndUpdate({}, footerData, {
-        upsert: true,
-        sort: { createdAt: -1 }
-      });
-    }
-
-    res.json({ message: "Portfolio saved successfully" });
+    const result = await response.json();
+    res.json({ message: "Portfolio saved successfully", data: result });
   } catch (error) {
     console.error("Save portfolio error:", error);
     res.status(400).json({ message: error.message });
@@ -132,24 +52,37 @@ export const savePortfolio = async (req, res) => {
  */
 export const getPortfolio = async (req, res) => {
   try {
-    // Fetch data from all collections
-    const landing = await Landing.findOne();
-    const projects = await Project.find().sort({ createdAt: -1 });
-    const about = await About.findOne();
-    const footer = await Footer.findOne();
+    const response = await fetch(process.env.DB_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "DB_PW": process.env.DB_PW
+      }
+    });
+
+    const text = await response.text();
+
+    console.log("STATUS:", response.status);
+    console.log("RESPONSE:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} - ${text}`);
+    }
+
+    const portfolioData = await response.json();
 
     // Return structured portfolio data
     res.json({
       Landingdata: {
         section: "LandingPage",
-        data: landing || {}
+        data: portfolioData.landing || {}
       },
       ProjectsData: {
         section: "ProjectsPage",
-        data: projects || []
+        data: portfolioData.projects || []
       },
-      AboutMeData: about || {},
-      FooterData: footer || {}
+      AboutMeData: portfolioData.about || {},
+      FooterData: portfolioData.footer || {}
     });
   } catch (error) {
     console.error("Get portfolio error:", error);
