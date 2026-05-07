@@ -1,5 +1,4 @@
 import express from "express";
-import { connectDB } from "../lib/mongodb.js";
 import cors from "cors";
 
 import projectRoutes from "../routes/projectRoutes.js";
@@ -8,13 +7,12 @@ import aboutRoutes from "../routes/aboutRoutes.js";
 import footerRoutes from "../routes/footerRoutes.js";
 import contactRoutes from "../routes/contactRoutes.js";
 import portfolioRoutes from "../routes/portfolioRoutes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
-
-await connectDB();
-console.log("Database connected");
 
 app.get("/", (req, res) => {
   res.json({ message: "API is running!" });
@@ -32,6 +30,7 @@ app.get("/users", async (req, res) => {
 app.use(cors({
   origin: [
     "http://localhost:3000",
+    "http://localhost:5000",
     "https://nugiprofile.netlify.app",
     "https://nugi-profile.vercel.app"
   ],

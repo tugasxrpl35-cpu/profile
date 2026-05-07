@@ -13,8 +13,25 @@ import About from "../models/about.js";
  */
 export const getAbout = async (req, res) => {
   try {
-    const aboutData = await About.findOne().sort({ createdAt: -1 });
-    
+const response = await fetch(process.env.DB_URL, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json",
+    "DB_PW": process.env.DB_PW
+  }
+});
+
+const text = await response.text();
+
+console.log("STATUS:", response.status);
+console.log("RESPONSE:", text);
+
+if (!response.ok) {
+  throw new Error(`HTTP ${response.status} - ${text}`);
+}
+
+    const aboutData = await response.json();
+
     if (!aboutData) {
       return res.json({
         subTitle: "",
@@ -24,14 +41,13 @@ export const getAbout = async (req, res) => {
         skills: []
       });
     }
-    
+
     res.json(aboutData);
   } catch (error) {
     console.error("Get about error:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
 /**
  * Create or update about section data
  * @param {Object} req - Express request object

@@ -4,8 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "local": "nodemon server.js",
-    "deployTest": "nodemon api/index.js"
+    "local": "nodemon api/index.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
